@@ -5,29 +5,14 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "repositories": {
-        "feedrss/database": {
-            "type": "path",
-            "url": "packages/feedrss/database"
-        },
         "feedrss/feeding": {
             "type": "path",
             "url": "packages/feedrss/feeding"
-        },
-        "feedrss/models": {
-            "type": "path",
-            "url": "packages/feedrss/models"
-        },
-        "feedrss/repos": {
-            "type": "path",
-            "url": "packages/feedrss/repos"
         }
     },
     "require": {
         "php": "^8.0.2",
-        "feedrss/database": "*",
         "feedrss/feeding": "*",
-        "feedrss/models": "*",
-        "feedrss/repos": "*",
         "guzzlehttp/guzzle": "^7.0",
         "laravel/framework": "^9.11",
         "laravel/sanctum": "^2.14.1",

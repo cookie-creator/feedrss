@@ -3,7 +3,6 @@
 namespace FeedrssFeeding\Adapter\RSSAdapter;
 
 use GuzzleHttp\Client;
-use FeedrssFeeding\Adapter\RSSAdapter\FeedAdapter;
 
 class FeedAPI
 {

@@ -2,6 +2,9 @@
 
 namespace FeedrssFeeding;
 
+use FeedrssFeeding\Adapter\RSSAdapter\FeedAPI;
+use FeedrssFeeding\Services\FeedService;
+use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 
 class FeedrssFeedingServiceProvider extends ServiceProvider
@@ -15,6 +18,9 @@ class FeedrssFeedingServiceProvider extends ServiceProvider
     {
         $this->app->bind('FeedrssFeeding\Contracts\CategoryInterface', 'FeedrssFeeding\Category');
         $this->app->bind('FeedrssFeeding\Contracts\PostInterface', 'FeedrssFeeding\Post');
+        $this->app->bind('feedrss', function () {
+            return new FeedRSS();
+        });
     }
 
     /**
