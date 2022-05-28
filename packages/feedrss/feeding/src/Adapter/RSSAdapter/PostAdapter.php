@@ -36,6 +36,7 @@ class PostAdapter
         $data['description'] = $xmlObj->description->__toString();
         $data['date'] = $xmlObj->pubDate->__toString();
         $data['guid'] = $xmlObj->guid->__toString();
+        $data['slug'] = str_replace('https://lifehacker.com/','', $xmlObj->link->__toString());
 
         $categories = [];
         foreach ($xmlObj->category as $xmlCategory)

@@ -6,13 +6,14 @@ use FeedrssFeeding\Contracts\PostInterface;
 
 class Post implements PostInterface
 {
+    private $guid;
+    private $slug;
     private $title;
     private $link;
     private $image;
     private $description;
     private $category;
     private $date;
-    private $guid;
 
     /*
      * @param Object $post
@@ -24,11 +25,11 @@ class Post implements PostInterface
 
     public function fill($post)
     {
+        $this->guid = $post['guid'];
+        $this->slug = $post['slug'];
         $this->title = $post['title'];
         $this->link = $post['link'];
         $this->description = $post['description'];
-        $this->guid = $post['guid'];
-
         $this->category = $post['category'];
         $this->image = $post['image'];
 
@@ -38,6 +39,12 @@ class Post implements PostInterface
     /**
     *
     */
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
     public function getTitle()
     {
         return $this->title;

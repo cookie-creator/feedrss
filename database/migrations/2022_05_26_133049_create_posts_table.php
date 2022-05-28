@@ -17,13 +17,13 @@ return new class extends Migration
             $table->id();
 
             $table->index('guid');
-
             $table->string('guid')->unique();
+            $table->foreignId('user_id')->constrained();
+            $table->string('slug');
+
             $table->string('title');
             $table->string('link');
-            $table->string('description');
-
-            $table->foreignId('user_id')->constrained();
+            $table->text('description');
 
             $table->timestamps();
         });

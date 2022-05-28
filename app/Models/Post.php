@@ -23,6 +23,11 @@ class Post extends Model
 
     public function categories()
     {
-        return $this->hasMany(Category::class);
+        return $this->belongsToMany(Category::class)->withTimestamps();
+    }
+
+    public function assignCategory($category)
+    {
+        $this->categories()->sync($category, false);
     }
 }

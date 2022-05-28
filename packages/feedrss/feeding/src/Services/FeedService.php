@@ -2,59 +2,59 @@
 
 namespace FeedrssFeeding\Services;
 
+use App\Models\Category;
 use App\Models\Image;
 use App\Models\Post;
+use App\Models\User;
 use FeedrssFeeding\Helpers\ImageUploadHelper;
+use FeedrssFeeding\Repositories\FeedRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class FeedService
 {
     private ImageUploadHelper $imageUploadHelper;
+    private FeedRepository $feedRepository;
 
-    public function __construct(ImageUploadHelper $imageUploadHelper)
+    public function __construct(ImageUploadHelper $imageUploadHelper, FeedRepository $feedRepository)
     {
         $this->imageUploadHelper = $imageUploadHelper;
+        $this->feedRepository = $feedRepository;
     }
 
     public function storePosts(Collection $feedPosts)
     {
+
+        $user = $this->feedRepository->getFirtsUser();
+
         foreach ($feedPosts as $feedPost)
         {
             // checkUnique and check if we have description
-            if ($this->checkUnique($feedPost->getGuid()) && $feedPost->getDescription() !== '')
+            if ($this->feedRepository->isUniqueGuid($feedPost->getGuid()) && $feedPost->getDescription() !== '')
             {
-                // create Models/Post
-                $post = new Post();
+                try {
 
-                $post->title = $feedPost->getTitle();
-                $post->link = $feedPost->getLink();
-                $post->description = $feedPost->getDescription();
-                $post->guid = $feedPost->getGuid();
+                    DB::beginTransaction();
+                    // create Models/Post
+                    $post = $this->feedRepository->storePost($user, $feedPost);
 
-                $post->save();
+                    // Upload image, save it and attach to post
+                    $imageName = $this->uploadImage($feedPost->getImage());
+                    if ($imageName)
+                    {
+                        $this->feedRepository->storeImage($post, $imageName);
+                    }
 
-                // Upload image, save it and attach to post
-                $imageName = $this->uploadImage($feedPost->getImage());
-                if ($imageName)
-                {
-                    $image = new Image();
-                    $image->name = $image;
+                    // Check new categories and attach to post
+                    $this->attachCategories($post, $feedPost->getCategories());
+
+                    DB::commit();
+
+                } catch (\Exception $e) {
+                    DB::rollBack();
                 }
-
-                // Check new categories and attach to post
-                $this->attachCategories($post, $feedPost->getCategories());
             }
         }
-    }
-
-    private function checkUnique($post)
-    {
-        return true;
-    }
-
-    private function storeCategories($categories)
-    {
-        return true;
     }
 
     /*
@@ -66,8 +66,11 @@ class FeedService
         return $this->imageUploadHelper->storeImage($url);
     }
 
-    private function attachCategories(Post $post, Collection $categories)
+    private function attachCategories(Post $post, Collection $feedCategories)
     {
-        return $post;
+        foreach ($feedCategories as $feedCategory)
+        {
+            $this->feedRepository->attachNewCategoryToPost($post, $feedCategory);
+        }
     }
 }
