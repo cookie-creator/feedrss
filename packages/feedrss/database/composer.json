@@ -1,0 +1,26 @@
+{
+    "name": "feedrss/database",
+    "description": "",
+    "minimum-stability": "dev",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "me",
+            "email": "send@here.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "FeedrssDatabase\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "FeedrssDatabase\\FeedrssDatabaseServiceProvider"
+            ]
+        }
+    }
+}
