@@ -17,7 +17,7 @@ class ImageUploadHelper
 
         $newFileName = $fileName['filename'].'_'.time().'.'.$fileName['extension'];
 
-        $rs = Storage::disk('local')->put('public/files'.$newFileName, file_get_contents($url));
+        $rs = Storage::disk('local')->put('public/files/'.$newFileName, file_get_contents($url));
 
         return ($rs) ? $newFileName : '';
     }

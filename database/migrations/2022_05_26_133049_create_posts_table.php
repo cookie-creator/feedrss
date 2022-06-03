@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('link');
             $table->text('description');
+            $table->text('text')->nullable();
 
             $table->timestamps();
         });

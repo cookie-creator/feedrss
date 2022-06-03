@@ -2,9 +2,7 @@
 
 namespace FeedrssFeeding\Jobs;
 
-use FeedrssFeeding\Adapter\RSSAdapter\FeedAPI;
-use FeedrssFeeding\Adapter\RSSAdapter\PostAdapter;
-use FeedrssFeeding\Services\FeedService;
+use FeedrssFeeding\FeedRSS;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -32,6 +30,7 @@ class FeedRSSJob implements ShouldQueue
      */
     public function handle()
     {
+        FeedRSS::start();
         info('FeedRss handle');
     }
 }
