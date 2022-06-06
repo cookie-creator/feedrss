@@ -6,7 +6,7 @@ const store = createStore({
     state: {
         user: {
             data: {},
-            token: sessionStorage.getItem("TOKEN"),
+            token: sessionStorage.getItem("token"),
         },
 
         imageBasicUrl: `${import.meta.env.VITE_API_BASE_URL}/api`,
@@ -30,6 +30,10 @@ const store = createStore({
           categories: {
             loading: false,
             links: [],
+            data: []
+          },
+          categoriesMutated: {
+            loading: false,
             data: []
           },
           currentCategory: {
@@ -113,7 +117,6 @@ const store = createStore({
       login({commit}, user) {
         return axiosClient.post('/auth/login', user)
           .then(({data}) => {
-            //commit('setUser', data.user);
             commit('setToken', data.access_token)
             return data;
           })
@@ -128,7 +131,7 @@ const store = createStore({
 
       /* User */
       getUser({commit}) {
-        return axiosClient.get('/auth/user')
+        return axiosClient.post('/auth/me')
           .then(res => {
             commit('setUser', res.data)
           })
@@ -266,6 +269,16 @@ const store = createStore({
           return res;
         })
       },
+      getAuthCategoriesForFilter({ commit }, {url = null} = {})
+      {
+        commit('setAuthCategoriesLoading', true)
+        url = url || "/auth/categories";
+        return axiosClient.get(url).then((res) => {
+          commit('setAuthCategoriesLoading', false)
+          commit("setAuthCategoriesMutate", res.data);
+          return res;
+        })
+      },
       getAuthPost({ commit }, id) {
         commit("setCurrentPostLoading", true);
         return axiosClient
@@ -314,14 +327,14 @@ const store = createStore({
       logout: (state) => {
         state.user.token = null;
         state.user.data = {};
-        sessionStorage.removeItem("TOKEN");
+        sessionStorage.removeItem("token");
       },
       setUser: (state, user) => {
         state.user.data = user;
       },
       setToken: (state, token) => {
         state.user.token = token;
-        sessionStorage.setItem('TOKEN', token);
+        sessionStorage.setItem('token', token);
       },
       dashboardLoading: (state, loading) => {
         state.dashboard.loading = loading;
@@ -411,7 +424,16 @@ const store = createStore({
       },
       setAuthCategories: (state, categories) => {
         state.auth.categories.data = categories.data;
+        state.auth.categoriesMutated.data = [];
+        categories.data.forEach(function(item, index, array) {
+          state.auth.categoriesMutated.data.push(
+            {
+              'key' : item.slug,
+              'value' : item.title
+            })
+        });
       },
+
 
       /* Auth posts */
       setAuthPostsLoading: (state, loading) => {

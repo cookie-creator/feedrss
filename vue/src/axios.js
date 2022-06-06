@@ -16,7 +16,8 @@ axiosClient.interceptors.response.use(response => {
   return response;
 }, error => {
   if (error.response.status === 401) {
-    sessionStorage.removeItem('TOKEN')
+    //localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
     router.push({name: 'Login'})
   } else if (error.response.status === 404) {
     router.push({name: 'NotFound'})

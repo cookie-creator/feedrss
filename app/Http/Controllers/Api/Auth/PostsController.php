@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Auth\PostResource;
+use App\Http\Resources\BookmarkResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class PostsController extends Controller
     public function index()
     {
         return PostResource::collection(Post::latest()
-            ->paginate($perPage = 20, $columns = ['*'], $pageName = 'posts'));
+            ->paginate($perPage = 50, $columns = ['*'], $pageName = 'posts'));
     }
 
     /**
@@ -47,9 +48,12 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+
+
+        //JWTAuth::toUser($token);
+
     }
 
     /**

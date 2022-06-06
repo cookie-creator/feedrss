@@ -28,8 +28,9 @@ const routes = [
     children: [
       {path: '/app', name: 'Dashboard', component: Dashboard},
       {path: '/app/posts', name: 'Posts', component: Posts},
-      {path: '/app/categories', name: 'Categories', component: Categories},
       {path: '/app/post/:id', name: 'PostView', component: PostView},
+      {path: '/app/post/create', name: 'PostCreate', component: PostView},
+      {path: '/app/categories', name: 'Categories', component: Categories},
     ]
   },
   {

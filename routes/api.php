@@ -30,10 +30,6 @@ Route::group([
 
     Route::resource('posts', \App\Http\Controllers\Api\Auth\PostsController::class);
     Route::resource('categories', \App\Http\Controllers\Api\Auth\CategoriesController::class);
-
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
 });
 
 //Route::resource('posts', \App\Http\Controllers\Api\PostsController::class);
