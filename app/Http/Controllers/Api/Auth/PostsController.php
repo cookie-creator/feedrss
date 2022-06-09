@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostkRequest;
 use App\Http\Resources\Auth\PostResource;
 use App\Http\Resources\BookmarkResource;
 use App\Models\Post;
@@ -37,9 +38,18 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostkRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $post = new Post();
+
+        $post->title = $data['title'];
+        $post->text = $data['text'];
+        $post->user_id = $data['user_id'];
+        $post->save();
+
+        return new PostResource($post);
     }
 
     /**
@@ -48,12 +58,12 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Request $request, Post $post)
     {
+        $user = auth('api')->user();
 
-
-        //JWTAuth::toUser($token);
-
+        return ($user->id !== $post->user_id) ? abort(403, 'Unauthorized action')
+            : new PostResource($post);
     }
 
     /**

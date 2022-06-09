@@ -280,10 +280,11 @@ const store = createStore({
         })
       },
       getAuthPost({ commit }, id) {
-        commit("setCurrentPostLoading", true);
+        commit("setAuthCurrentPostLoading", true);
         return axiosClient
           .get(`/auth/posts/${id}`)
           .then((res) => {
+            console.log(res.data);
             commit("setAuthCurrentPost", res.data);
             commit("setAuthCurrentPostLoading", false);
             return res;
